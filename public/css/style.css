@@ -1,0 +1,239 @@
+/* Подключаем Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap');
+
+/* Общие стили */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Montserrat', sans-serif; /* Новый шрифт */
+    background: linear-gradient(135deg, #4facfe, #00f2fe);
+    color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+}
+
+/* Основной контейнер */
+.game-container {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    max-width: 400px;
+    width: 90%;
+}
+
+/* Заголовок */
+h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    color: #007bff;
+    font-weight: 600;
+    animation: bounce 2s infinite; /* Анимация заголовка */
+}
+
+/* Подзаголовок */
+p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+}
+
+/* Поле ввода */
+.input {
+    width: 70%;
+    padding: 8px 12px;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Фокус на поле ввода */
+.input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* Блок кнопок "На главную" и "Рейтинг" */
+.buttons {
+  display: flex;
+  justify-content: center; /* Центрируем кнопки */
+  gap: 15px; /* Расстояние между кнопками */
+  margin-top: 20px; /* Увеличиваем отступ от кнопки "Завершить уровень" */
+}
+
+.btn {
+  padding: 8px 20px;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  width: auto;
+  text-align: center;
+}
+
+/* Основная кнопка */
+.btn.primary {
+  background: #007bff;
+  color: white;
+  font-weight: 600;
+}
+
+.btn.primary:hover {
+  background: #0056b3;
+  transform: scale(1.05);
+}
+
+/* Второстепенная кнопка */
+.btn.secondary {
+  background: #f4f4f4;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.btn.secondary:hover {
+  background: #ddd;
+  transform: scale(1.05);
+}
+
+
+/* Анимация заголовка (подпрыгивание) */
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Таймер и очки */
+.header {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  text-align: right; /* Выравниваем текст по правому краю */
+  display: flex;
+  flex-direction: column; /* Располагаем элементы вертикально */
+  gap: 10px; /* Уменьшаем расстояние между таймером и очками */
+}
+
+.timer, .score {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #007bff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.errorShake {
+    animation: shake 0.5s;
+  }
+  
+  @keyframes shake {
+    0% { transform: translate(0, 0); }
+    25% { transform: translate(-5px, 0); }
+    50% { transform: translate(5px, 0); }
+    75% { transform: translate(-5px, 0); }
+    100% { transform: translate(0, 0); }
+  }
+  
+
+  /* Медленное хождение для слона */
+.elephant-walk {
+  animation: elephantWalk 5s linear infinite;
+}
+
+/* Плавание утки */
+.duck-swim {
+  animation: duckSwim 3s linear infinite;
+}
+
+/* Прыжки кенгуру */
+.kangaroo-jump {
+  animation: kangarooJump 1.5s ease-in-out infinite;
+}
+
+  /* Медленное хождение для верблюда */
+  .camel-walk {
+    animation: camelWalk 7s linear infinite;
+  }
+
+@keyframes elephantWalk {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(50px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes duckSwim {
+  0%   { transform: translateY(0); }
+  50%  { transform: translateY(10px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes kangarooJump {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(-30px); }
+  60%  { transform: translateY(-30px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes camelWalk {
+  0%   { transform: translateX(0); }
+  50%  { transform: translateX(50px); }
+  100% { transform: translateX(0); }
+}
+
+/* Правильный ответ – исчезновение */
+.correct {
+  animation: fadeOut 1s forwards;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+}
+
+/* Неправильный ответ – тряска */
+.wrong-shake {
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25%  { transform: translateX(-5px); }
+  50%  { transform: translateX(5px); }
+  75%  { transform: translateX(-5px); }
+}
+
+#animalContainer img {
+  width: 200px;  
+  height: auto; 
+  margin: 10px;
+}
+
+.victory-animation {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%   { transform: scale(1);   color: #fff; }
+  50%  { transform: scale(1.2); color: #f0f; }
+  100% { transform: scale(1);   color: #fff; }
+}
+
+.victory-text {
+  font-size: 2em;
+  text-align: center;
+  margin-top: 50px;
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Рейтинг</title>
+    <link rel="shortcut icon" href="favicon.webp" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="animated-title">Рейтинг игроков</h1>
+        <div id="ratingContainer" class="rating">
+            <!-- Динамически добавляемый рейтинг -->
+        </div>
+        <div class="buttons">
+            <button class="btn primary" onclick="goToMain()">На главную</button>
+        </div>
+    </div>
+
+    <script>
+        // Функция для отображения рейтинга из localStorage
+        window.onload = () => {
+            const ratingContainer = document.getElementById("ratingContainer");
+            const rating = JSON.parse(localStorage.getItem("rating") || "[]");
+            if (rating.length === 0) {
+                ratingContainer.innerHTML = "<p>Рейтинг пуст</p>";
+            } else {
+                rating.forEach((player, index) => {
+                    const item = document.createElement("div");
+                    item.classList.add("rating-item");
+                    item.innerHTML = `${index + 1}. ${player.name} - ${player.score} очков`;
+                    ratingContainer.appendChild(item);
+                });
+            }
+        };
+
+        // Переход на главную
+        function goToMain() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

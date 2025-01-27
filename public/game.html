@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Найди животное по признаку</title>
+    <link rel="shortcut icon" href="favicon.webp" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="header">
+      <!-- Глобальный таймер -->
+      <div id="totalTimeDisplay" class="timer">Общее время: 00:00</div>
+      <!-- Таймер уровня -->
+      <div id="roundTimer" class="timer">Осталось: -- сек.</div>
+      <!-- Очки -->
+      <div id="scoreDisplay" class="score">Очки: 0</div>
+    </div>
+  
+    <div class="game-container">
+      <h1 class="animated-title">Найди животное по признаку</h1>
+  
+      <!-- Блок, где будем показывать вопрос -->
+      <div id="question" class="question"></div>
+  
+      <!-- Блок, куда будут добавляться картинки животных -->
+      <div id="animalContainer"></div>
+  
+      <div id="controls">
+        <button id="exitBtn" class="btn primary">Завершить уровень</button>
+      </div>
+      <div class="buttons">
+        <a href="index.html" class="btn secondary">На главную</a>
+        <a href="rating.html" class="btn secondary">Рейтинг</a>
+      </div>        
+    </div>
+  
+    <!-- Подключаем JS -->
+    <script src="js/gamelogic.js" type="module"></script>
+  </body>
+  
+</html>

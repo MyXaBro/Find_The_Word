@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Найди слова</title>
+    <link rel="shortcut icon" href="favicon.webp" type="image/x-icon">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="floating">Найди слова</h1>
+        <p>Введите своё имя, чтобы начать игру:</p>
+        <input type="text" id="playerName" placeholder="Введите имя" class="input">
+        <div class="buttons">
+            <button id="startGameBtn" class="btn primary" onclick="startGame()">Начать игру</button>
+            <button id="showRatingBtn" class="btn secondary" onclick="goToRating()">Рейтинг</button>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
