@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig host="217.18.62.101" id="0820b176-886a-431c-a57a-db85385e7eb9" keyPath="\\wsl.localhost\Ubuntu\home\vlad\.ssh\id_rsa.txt" port="22" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>
