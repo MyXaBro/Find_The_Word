@@ -216,11 +216,30 @@ p {
   75%  { transform: translateX(-5px); }
 }
 
-#animalContainer img {
-  width: 200px;  
-  height: auto; 
-  margin: 10px;
+/* Контейнер для животных */
+#animalContainer {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 колонки */
+  gap: 10px; /* Отступы между изображениями */
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
 }
+
+/* Размер изображений животных */
+#animalContainer img {
+  width: 100px; /* Изображения теперь адаптируются под сетку */
+  height: auto;
+  transition: transform 0.2s ease-in-out;
+}
+
+/* Эффект наведения */
+#animalContainer img:hover {
+  transform: scale(1.1);
+}
+
 
 .victory-animation {
   animation: pulse 2s infinite;
@@ -236,4 +255,111 @@ p {
   font-size: 2em;
   text-align: center;
   margin-top: 50px;
+}
+
+.level {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #ff5733;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  text-align: right;
+}
+
+/* Анимация перехода на новый уровень */
+.level-transition {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 3rem;
+  font-weight: bold;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px 40px;
+  border-radius: 10px;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  z-index: 1000;
+  pointer-events: none; /* Отключаем взаимодействие, чтобы не мешало кликам */
+}
+
+
+/* Фейерверк */
+#fireworkCanvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  display: none;
+}
+
+/* Движение дельфина (плавание с волнами) */
+.dolphin-swim {
+  animation: dolphinSwim 4s ease-in-out infinite alternate;
+}
+
+@keyframes dolphinSwim {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* 🦅 Орел - полет */
+.eagle-fly {
+  animation: eagleFly 3s ease-in-out infinite;
+}
+
+@keyframes eagleFly {
+  0% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-20px) rotate(-5deg); }
+  100% { transform: translateY(0) rotate(0deg); }
+}
+
+/* 🐻 Медведь - ходьба */
+.bear-walk {
+  animation: bearWalk 6s linear infinite;
+}
+
+@keyframes bearWalk {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(40px); }
+  100% { transform: translateX(0); }
+}
+
+/* 🐊 Крокодил - медленное плавание */
+.crocodile-swim {
+  animation: crocodileSwim 5s ease-in-out infinite alternate;
+}
+
+@keyframes crocodileSwim {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(15px); }
+  100% { transform: translateX(0); }
+}
+
+/* 🐬 Дельфин - волнообразное плавание */
+.dolphin-swim {
+  animation: dolphinSwim 4s ease-in-out infinite alternate;
+}
+
+@keyframes dolphinSwim {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+/* 🐢 Черепаха - медленное ползание */
+.turtle-crawl {
+  animation: turtleCrawl 10s linear infinite;
+}
+
+@keyframes turtleCrawl {
+  0% { transform: translateX(0); }
+  50% { transform: translateX(20px); }
+  100% { transform: translateX(0); }
 }

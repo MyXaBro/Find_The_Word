@@ -22,12 +22,16 @@ function initGame() {
 }
 
 function startGame() {
-  // Определяем время на уровне
+  // Покажем уровень
+  document.getElementById('levelDisplay').textContent = `Уровень: ${currentLevel}`;
+
+  // Определяем время на уровне (таймер)
   switch (currentLevel) {
-    case 1: timeLimit = 30; break;
-    case 2: timeLimit = 20; break;
-    case 3: timeLimit = 10; break;
+    case 1: timeLimit = 30; break;  // +10 / -5
+    case 2: timeLimit = 20; break;  // +15 / -10
+    case 3: timeLimit = 10; break;  // +20 / -10
   }
+
   startRoundTimer();
   generateQuestion();
 }
@@ -36,17 +40,25 @@ function startGame() {
 // 2) Таймеры
 // ------------------------------------------------
 
-function startRoundTimer() {
-  let currentTime = timeLimit;
-  displayTimeLeft(currentTime);
+let remainingTime; // Добавляем глобальную переменную для хранения оставшегося времени
+
+function startRoundTimer(resumeTime = null) {
+  remainingTime = resumeTime !== null ? resumeTime : timeLimit; 
+  displayTimeLeft(remainingTime);
+
+  clearInterval(timerId);
 
   timerId = setInterval(() => {
-    currentTime--;
-    displayTimeLeft(currentTime);
+    remainingTime--;
+    displayTimeLeft(remainingTime);
 
-    if (currentTime <= 0) {
+    if (remainingTime <= 0) {
       clearInterval(timerId);
-      endRound(false); // время вышло – провал
+      if (currentLevel < 3) {
+        nextLevel();
+      } else {
+        endGame(false);
+      }
     }
   }, 1000);
 }
@@ -75,10 +87,10 @@ function generateQuestion() {
   const question = questions[randomIndex];
   showQuestion(question);
 
-  // Если нужно случайное кол-во - slice(0,4) / slice(0,5).
+  // Смешиваем массив животных
   const chosenAnimals = shuffleArray([...animals]);
 
-  // Гарантируем, что в 4-х точно есть «правильный»
+  // Гарантируем, что в четырёх точно есть «правильный»
   const correctAnimal = animals.find(an => an[question.property] === question.value);
   if (correctAnimal && !chosenAnimals.includes(correctAnimal)) {
     chosenAnimals[Math.floor(Math.random() * chosenAnimals.length)] = correctAnimal;
@@ -101,7 +113,7 @@ function showAnimals(animalList, question) {
     img.src = `assets/${getImageName(animal.name)}`;
     img.alt = animal.name;
 
-    // Можно класс анимации (ходьба, плавание и т.д.)
+    // Присваиваем класс анимации
     img.classList.add(getAnimationClass(animal.name));
 
     // При клике проверяем
@@ -118,27 +130,39 @@ function showAnimals(animalList, question) {
 // ------------------------------------------------
 
 function checkAnswer(chosenAnimal, question) {
-  // Проверяем, совпадает ли свойство
+  let correctScore, wrongScore;
+  switch (currentLevel) {
+    case 1:
+      correctScore = 10;
+      wrongScore  = 5;
+      break;
+    case 2:
+      correctScore = 15;
+      wrongScore  = 10;
+      break;
+    case 3:
+      correctScore = 20;
+      wrongScore  = 10;
+      break;
+  }
+
   if (chosenAnimal[question.property] === question.value) {
-    // Правильный ответ
-    score += 10;
+    score += correctScore;
     document.getElementById('scoreDisplay').textContent = `Очки: ${score}`;
 
     playAnimalSound(chosenAnimal.name);
-
-    // 4.1) Анимация исчезновения
     animateCorrect(chosenAnimal.name);
 
-    // 4.2) Ждём 1 секунду и завершаем раунд (чтобы успела отыграть анимация)
+    clearInterval(timerId); // Останавливаем таймер, но сохраняем оставшееся время
+
     setTimeout(() => {
-      endRound(true);
+      startRoundTimer(remainingTime); // Передаём оставшееся время, а не сбрасываем таймер
+      generateQuestion();
     }, 1000);
 
   } else {
-    // Неправильный ответ
-    score -= 5;
+    score -= wrongScore;
     document.getElementById('scoreDisplay').textContent = `Очки: ${score}`;
-
     animateWrong(chosenAnimal.name);
   }
 }
@@ -148,7 +172,7 @@ function endRound(success) {
 
   if (success) {
     currentRound++;
-    // Допустим, 3 раунда на уровень
+    // 3 раунда на уровень
     if (currentRound > 3) {
       nextLevel();
     } else {
@@ -162,34 +186,57 @@ function endRound(success) {
 }
 
 function nextLevel() {
-  currentLevel++;
-  currentRound = 1;
-
-  if (currentLevel > 3) {
-    // Все уровни пройдены
-    endGame(true);
+  if (currentLevel >= 3) {
+    endGame();
   } else {
-    startGame();
+    currentLevel++;
+    showLevelTransition(currentLevel);
+
+    setTimeout(() => {
+      startGame();
+    }, 2000);
   }
 }
+
 
 // ------------------------------------------------
 // 5) Финиш и сохранение
 // ------------------------------------------------
 
-function endGame(isVictory = false) {
+function endGame() {
   stopGlobalTimer();
   saveResult();
 
-  if (isVictory) {
-    doVictoryAnimation();
-    setTimeout(() => {
-      window.location.href = 'rating.html';
-    }, 3000);
+  if (score >= 300) {
+    showEndMessage("🎉 Победа! 🎉", "#28a745"); // Зелёный фон
+    startFireworks();
   } else {
-    window.location.href = 'rating.html';
+    showEndMessage("⏳ Время вышло! Нужно 300 очков!", "#dc3545"); // Красный фон
   }
+
+  setTimeout(() => {
+    window.location.href = 'rating.html';
+  }, 3000);
 }
+
+
+function showEndMessage(text, bgColor) {
+  const endMessage = document.createElement("div");
+  endMessage.textContent = text;
+  endMessage.style.position = "fixed";
+  endMessage.style.top = "50%";
+  endMessage.style.left = "50%";
+  endMessage.style.transform = "translate(-50%, -50%)";
+  endMessage.style.padding = "20px";
+  endMessage.style.fontSize = "2rem";
+  endMessage.style.fontWeight = "bold";
+  endMessage.style.color = "#fff";
+  endMessage.style.background = bgColor;
+  endMessage.style.borderRadius = "10px";
+  endMessage.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.3)";
+  document.body.appendChild(endMessage);
+}
+
 
 function saveResult() {
   const playerName = localStorage.getItem('playerName') || 'Аноним';
@@ -209,13 +256,17 @@ function saveResult() {
 // ------------------------------------------------
 
 function playAnimalSound(animalName) {
-  // Подключите свои .mp3
   let soundFile = '';
   switch (animalName) {
     case 'Слон':    soundFile = 'elephant.mp3'; break;
     case 'Утка':    soundFile = 'duck.mp3';     break;
     case 'Кенгуру': soundFile = 'kangaroo.mp3'; break;
     case 'Верблюд': soundFile = 'camel.mp3';    break;
+    case 'Дельфин': soundFile = 'dolphin.mp3';    break;
+    case 'Орел': soundFile = 'eagle.mp3';    break;
+    case 'Медведь': soundFile = 'bear.mp3';    break;
+    case 'Черепаха': soundFile = 'tortila.mp3';    break; 
+    case 'Крокодил': soundFile = 'crocodile.mp3';    break;
   }
   if (soundFile) {
     const audio = new Audio(`assets/sounds/${soundFile}`);
@@ -231,7 +282,6 @@ function shuffleArray(arr) {
   return arr.sort(() => Math.random() - 0.5);
 }
 
-// Если угаданное животное верное – анимация + remove()
 function animateCorrect(animalName) {
   const imgs = document.querySelectorAll('#animalContainer img');
   imgs.forEach(img => {
@@ -244,24 +294,23 @@ function animateCorrect(animalName) {
   });
 }
 
-// Если неверное, трясём
 function animateWrong(animalName) {
   const imgs = document.querySelectorAll('#animalContainer img');
+  let found = false;
+
   imgs.forEach(img => {
-    if (img.alt === animalName) {
+    if (img.alt.trim().toLowerCase() === animalName.trim().toLowerCase()) {
       img.classList.add('wrong-shake');
+      found = true;
       setTimeout(() => {
         img.classList.remove('wrong-shake');
       }, 500);
     }
   });
-}
 
-// Простая анимация победы
-function doVictoryAnimation() {
-  const container = document.getElementById('animalContainer');
-  container.innerHTML = `<h2 class="victory-text">Поздравляем, вы прошли все уровни!</h2>`;
-  container.classList.add('victory-animation');
+  if (!found) {
+    console.warn(`Не найдено изображение для: ${animalName}`);
+  }
 }
 
 function getImageName(animalName) {
@@ -270,15 +319,26 @@ function getImageName(animalName) {
     case 'Утка':    return 'duck.png';
     case 'Кенгуру': return 'kenguru.png';
     case 'Верблюд': return 'camel.png';
+    case 'Дельфин': return 'dolphin.png';
+    case 'Орел': return 'eagle.png';
+    case 'Медведь': return 'bear.png';
+    case 'Черепаха': return 'tortila.png';
+    case 'Крокодил': return 'crocodile.png';
   }
 }
 
 function getAnimationClass(animalName) {
   switch (animalName) {
-    case 'Слон':    return 'elephant-walk';
-    case 'Утка':    return 'duck-swim';
+    case 'Слон': return 'elephant-walk';
+    case 'Утка': return 'duck-swim';
     case 'Кенгуру': return 'kangaroo-jump';
-    case 'Верблюд': return 'camel-walk'; 
+    case 'Верблюд': return 'camel-walk';
+    case 'Дельфин': return 'dolphin-swim';
+    case 'Орел': return 'eagle-fly';
+    case 'Медведь': return 'bear-walk';
+    case 'Черепаха': return 'turtle-crawl';
+    case 'Крокодил': return 'crocodile-swim';
+    default: return '';
   }
 }
 
@@ -287,5 +347,73 @@ function getAnimationClass(animalName) {
 // ------------------------------------------------
 
 document.getElementById('exitBtn').addEventListener('click', () => {
-  endRound(false);
+  if (currentLevel < 3) {
+    nextLevel();
+  } else {
+    endGame(true);
+  }
 });
+
+function showLevelTransition(levelNumber) {
+  const levelTransition = document.getElementById('levelTransition');
+  levelTransition.textContent = `Уровень ${levelNumber}!`;
+  levelTransition.style.opacity = '1';
+
+  setTimeout(() => {
+    levelTransition.style.opacity = '0';
+  }, 2000);
+}
+
+function startFireworks() {
+  const canvas = document.getElementById("fireworkCanvas");
+  if (!canvas) return; // Если элемента нет, выходим
+
+  const ctx = canvas.getContext("2d");
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  canvas.style.display = "block";
+
+  let particles = [];
+
+  function createParticle(x, y) {
+    const colors = ["#ff5733", "#ffbd33", "#33ff57", "#3357ff", "#f033ff"];
+    return {
+      x,
+      y,
+      radius: Math.random() * 3 + 2,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speedX: (Math.random() - 0.5) * 5,
+      speedY: (Math.random() - 0.5) * 5,
+      life: 50,
+    };
+  }
+
+  function drawParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach((p, i) => {
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fillStyle = p.color;
+      ctx.fill();
+      p.x += p.speedX;
+      p.y += p.speedY;
+      p.life--;
+      if (p.life <= 0) particles.splice(i, 1);
+    });
+
+    if (particles.length > 0) {
+      requestAnimationFrame(drawParticles);
+    } else {
+      setTimeout(() => {
+        canvas.style.display = "none"; // Убираем фейерверк через 3 секунды
+      }, 3000);
+    }
+  }
+
+  for (let i = 0; i < 100; i++) {
+    particles.push(createParticle(canvas.width / 2, canvas.height / 2));
+  }
+
+  drawParticles();
+}
+
