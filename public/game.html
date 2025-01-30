@@ -24,10 +24,26 @@
   
       <!-- Блок, где будем показывать вопрос -->
       <div id="question" class="question"></div>
-  
-      <!-- Блок, куда будут добавляться картинки животных -->
+
+      <!-- Контейнер для животных (будет меняться в зависимости от уровня) -->
       <div id="animalContainer"></div>
-  
+
+      <!-- Блок с корзинами -->
+      <div id="binsContainer" class="bins-container">
+        <div class="bin" id="predators" ondrop="drop(event, 'predator')" ondragover="allowDrop(event)">Хищники</div>
+        <div class="bin" id="herbivores" ondrop="drop(event, 'herbivore')" ondragover="allowDrop(event)">Травоядные</div>
+        <div class="bin" id="omnivores" ondrop="drop(event, 'omnivore')" ondragover="allowDrop(event)">Всеядные</div>
+      </div>
+
+      <!-- Контейнер для 3-го уровня (животные и ввод) -->
+      <div id="level3Container" class="input_hidden">
+        <div id="level3AnimalContainer" class="level3-animal-container"></div>
+        <div id="inputContainer" class="input-container">
+            <input type="text" id="animalInput" placeholder="Введите название..." autocomplete="off">
+            <button id="submitAnswer">Ответить</button>
+        </div>
+      </div>
+
       <div id="controls">
         <button id="exitBtn" class="btn primary">Завершить уровень</button>
       </div>

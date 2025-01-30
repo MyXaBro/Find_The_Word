@@ -363,3 +363,152 @@ p {
   50% { transform: translateX(20px); }
   100% { transform: translateX(0); }
 }
+
+/* Контейнеры для сортировки */
+.bins-container {
+  display: flex;
+  justify-content: center;
+  display: none;
+  gap: 20px;
+  margin-top: 30px;
+  padding: 15px;
+}
+
+/* Стиль корзин */
+.bin {
+  width: 150px;
+  height: 120px;
+  border: 2px dashed #007bff;
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #007bff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Контейнер животных */
+#animalContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  min-height: 250px;
+}
+
+/* Размер животных */
+.draggable-animal {
+  width: 80px;
+  height: auto;
+  cursor: grab;
+}
+
+/* Перетаскиваемый объект */
+.draggable-animal:active {
+  cursor: grabbing;
+  opacity: 0.7;
+}
+
+/* ✅ Корзина при успешном переносе */
+.correct-drop {
+  background-color: rgba(40, 167, 69, 0.3) !important;
+  border-color: #28a745 !important;
+  transition: background-color 0.5s ease;
+}
+
+/* ❌ Ошибочное перемещение */
+.wrong-drop {
+  background-color: rgba(220, 53, 69, 0.3) !important;
+  border-color: #dc3545 !important;
+  transition: background-color 0.5s ease;
+}
+
+/**************************/
+
+.animal-img {
+  width: 120px;
+  height: auto;
+  margin: 10px;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.animal-img:hover {
+  transform: scale(1.1);
+}
+
+
+/* Вопрос по центру */
+.question-container {
+  text-align: center;
+  font-size: 22px;
+  font-weight: bold;
+  color: #007bff;
+  margin: 15px 0;
+}
+
+/* Контейнер для животных */
+.level3-animal-container {
+  display: flex;
+  justify-content: center;
+  gap: 30px; /* Увеличиваем отступ между картинками */
+  margin-bottom: 30px; /* Увеличенный отступ вниз */
+}
+
+/* Размер и стиль животных */
+.level3-animal-container img {
+  width: 120px;
+  height: auto;
+  cursor: pointer;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Анимация при наведении */
+.level3-animal-container img:hover {
+  transform: scale(1.1);
+}
+
+/* Поле ввода */
+.input-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Расстояние между инпутом и кнопкой */
+  margin: 30px 20px; /* Отступ от животных */
+}
+
+/* Поле ввода + кнопка */
+#animalInput {
+  flex: 1; /* Позволяет инпуту занимать доступное пространство */
+  padding: 10px;
+  font-size: 18px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  text-align: center;
+  width: 250px; /* Фиксированная ширина */
+}
+
+/* Кнопка ответа */
+#submitAnswer {
+  padding: 10px 20px;
+  font-size: 18px;
+  background: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  height: 42px; /* Выравниваем по высоте с инпутом */
+}
+
+#submitAnswer:hover {
+  background-color: #0056b3;
+}
+
+.input_hidden{
+  display: none;
+}
